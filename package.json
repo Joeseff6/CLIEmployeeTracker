@@ -1,0 +1,25 @@
+{
+  "name": "CLIEmployeeTracker",
+  "version": "1.0.0",
+  "description": "A command line application that is used to store and read data on Employees.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joeseff6/CLIEmployeeTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joeseff6/CLIEmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/Joeseff6/CLIEmployeeTracker#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "inquirer": "^8.0.0",
+    "mysql2": "^2.2.5"
+  }
+}
