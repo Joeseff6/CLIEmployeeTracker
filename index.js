@@ -30,6 +30,29 @@ connection.connect((err) => {
 
 
 const runApp = () => {
-    console.log(`Welcome to your Employee Tracker!`);
-    inquirer.prompt(questions.menuChoices)
+    console.log(`Welcome to the Employee Tracker!`);
+    inquirer.prompt(questions.menuChoices).then(response => {
+        switch (response.menuChoice) {
+            case `View all employees`:
+                getEmployees();
+                break;
+        }
+    })
 }
+
+const getEmployees = () => {
+    connection.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        if (res.length === 0) {
+            console.log(`There are currently no employees. Time to hire!`)
+            console.log(`------------------------------------------------\n\n`)
+            runApp()
+        } else {
+            console.log('Here are the current employees:\n');
+            console.table(res);
+            connection.end();
+            console.log(`------------------------------------------------\n\n`)
+            runApp()
+        }
+    });
+};
