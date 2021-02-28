@@ -19,22 +19,15 @@ connection.connect((err) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
 const runApp = () => {
     console.log(`Welcome to the Employee Tracker!`);
     inquirer.prompt(questions.menuChoices).then(response => {
         switch (response.menuChoice) {
             case `View all employees`:
                 getEmployees();
+                break;
+            case `Exit`:
+                exit();
                 break;
         }
     })
@@ -56,3 +49,9 @@ const getEmployees = () => {
         }
     });
 };
+
+const exit = () => {
+    console.log(`Goodbye!`);
+    connection.end;
+    process.exit();
+}
