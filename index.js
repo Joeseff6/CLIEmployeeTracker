@@ -15,4 +15,21 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}\n`);
+    runApp()
 });
+
+
+
+
+
+
+
+
+
+
+
+
+const runApp = () => {
+    console.log(`Welcome to your Employee Tracker!`);
+    inquirer.prompt(questions.menuChoices)
+}
