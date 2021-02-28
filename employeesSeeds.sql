@@ -1,7 +1,9 @@
+-- Create and use database
 CREATE DATABASE employees_db;
 
 USE employees_db;
 
+-- Create tables
 CREATE TABLE department(
 id INTEGER AUTO_INCREMENT NOT NULL,
 name VARCHAR(30),
@@ -25,3 +27,18 @@ role_id INTEGER NOT NULL, manager_id INTEGER NOT NULL,
   FOREIGN KEY(role_id) REFERENCES role(id),
   FOREIGN KEY(manager_id) REFERENCES role(id)
 );
+
+-- Insert into department table
+INSERT INTO department(name)
+VALUES
+('Engineering');
+
+SELECT * FROM department
+
+-- Insert into employee table
+INSERT INTO employee(first_name,last_name,role_id,manager_id)
+VALUES
+('Joseph','Soria',101,202),
+('Mary','Kate',202,NULL);
+
+SELECT * FROM employee
