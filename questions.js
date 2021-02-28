@@ -5,7 +5,8 @@ const mainMenu = [
     'Add employee',
     `Remove employee`,
     `Update employee role`,
-    `Update employee manager`
+    `Update employee manager`,
+    `Exit`
 ];
 
 const questions = {
