@@ -39,13 +39,13 @@ const getEmployees = () => {
         if (res.length === 0) {
             console.log(`There are currently no employees. Time to hire!`)
             console.log(`------------------------------------------------\n\n`)
-            runApp()
+            setTimeout(runApp,2000);
         } else {
             console.log('Here are the current employees:\n');
             console.table(res);
             connection.end();
             console.log(`------------------------------------------------\n\n`)
-            runApp()
+            setTimeout(runApp,2000);
         }
     });
 };
