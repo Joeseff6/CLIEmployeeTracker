@@ -72,10 +72,10 @@ WHERE id = 'ENTER ID NUMBER FROM ROLE TABLE HERE';
 
 -- Display employees by department
 SELECT 
+	d.name,
 	first_name,
 	last_name,
-	r.title,
-	d.name
+	r.title
 FROM employee e
 INNER JOIN 
 	role r ON (e.role_id = r.id)
