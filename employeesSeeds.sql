@@ -38,35 +38,28 @@ FOREIGN KEY (manager_id)
 	ON DELETE CASCADE
 );
 
--- Insert into department table
-INSERT INTO department(name)
-VALUES
-('Engineering'),
-('Project Managment'),
-('Supply Chain Management'),
-('Operations'),
-('Quality');
+-- To Add Employee
 
-SELECT * FROM department
+	-- Insert into department table
+	INSERT INTO department(name)
+	VALUES
+	('Engineering'),
+	('Project Managment'),
+	('Supply Chain Management'),
+	('Operations'),
+	('Quality');
 
--- View Departments
+	-- Insert into role table
+	INSERT INTO role(title,salary,department_id)
+	VALUES
+	('ROLE','SALARY','ID OF DEPARTMENT FROM DEPARTMENT TABLE'),
 
-SELECT * FROM department
+	-- Insert into employee table
+	INSERT INTO employee(first_name,last_name,role_id,manager_id)
+	VALUES
+	('FIRST NAME','LAST NAME','ID OF EMPLOYEE FROM ROLE TABLE','ID OF MANAGER FROM ROLE TABLE'),
 
--- Insert into role table
-INSERT INTO role(title,salary,department_id)
-VALUES
-('ROLE','SALARY','ID OF DEPARTMENT FROM DEPARTMENT TABLE'),
-
-
-SELECT * FROM employee
-
--- Insert into employee table
-INSERT INTO employee(first_name,last_name,role_id,manager_id)
-VALUES
-('FIRST NAME','LAST NAME','ID OF EMPLOYEE FROM ROLE TABLE','ID OF MANAGER FROM ROLE TABLE'),
-
-SELECT * FROM employee;
+-- 
 
 -- Deleting employees using parent role table
 DELETE FROM role
@@ -81,13 +74,25 @@ WHERE id = 'ENTER ID NUMBER FROM ROLE TABLE HERE';
 SELECT 
 	first_name,
 	last_name,
-	department.name
+	r.title,
+	d.name
 FROM employee e
 INNER JOIN 
 	role r ON (e.role_id = r.id)
 INNER JOIN
-	department ON (r.department_id = department.id)
-WHERE department_id = 'ENTER DEPARTMENT ID HERE'; 
+	department d ON (r.department_id = d.id)
+WHERE name = 'ENTER DEPARTMENT NAME HERE';
+
+-- Display employees by title
+SELECT 
+	first_name,
+    last_name,
+    r.title
+FROM employee e
+	INNER JOIN 
+		role r ON (e.role_id = r.id)
+	WHERE
+		r.title = 'Engineer';
 
 -- Display employees by Manager
 SELECT 
