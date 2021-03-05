@@ -44,7 +44,6 @@ const runApp = () => {
                 break;
             case `Exit`:
                 functions.exit();
-                setTimeout(runApp,2000);
                 break;
         }
     })
