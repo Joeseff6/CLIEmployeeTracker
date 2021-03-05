@@ -26,6 +26,19 @@ const runApp = () => {
             case `View all employees`:
                 getEmployees();
                 break;
+            case `View all employees by department`:
+                getEmployeesDepartment();
+                break;
+            case `View all employees by Manager`:
+                break;
+            case `Add Employee`:
+                break;
+            case `Remove Employee`:
+                break;
+            case `Update Employee role`:
+                break;
+            case `Update employee manager`:
+                break;
             case `Exit`:
                 exit();
                 break;
@@ -43,12 +56,44 @@ const getEmployees = () => {
         } else {
             console.log('Here are the current employees:\n');
             console.table(res);
-            connection.end();
             console.log(`------------------------------------------------\n\n`)
             setTimeout(runApp,2000);
         }
     });
 };
+
+const getEmployeesDepartment = () => {
+    connection.query('SELECT name FROM department', (err, res) => {
+        if (err) throw err;
+        let departmentList = res.map(department => department.name);
+        console.log(departmentList);
+        inquirer.prompt([
+            {
+                type: `list`,
+                name: `department`,
+                message: `Which department do you want to view?`,
+                choices: departmentList
+            }
+        ]).then(response => {
+            let query = 
+                `SELECT d.name, first_name, last_name, r.title, `;
+                query += 
+                `FROM employee e `;
+                query +=
+                `INNER JOIN role r ON (e.role_id = r.id) `;
+                query +=
+                `INNER JOIN department d ON (r.department_id = d.id) `;
+                query +=
+                `WHERE name = ?`;
+            
+            connection.query(query,[response.department], (err,res) => {
+                if (err) throw err;
+                console.table(res)
+                setTimeout(runApp,2000);
+            });
+        });
+    });
+} 
 
 const exit = () => {
     console.log(`Goodbye!`);
