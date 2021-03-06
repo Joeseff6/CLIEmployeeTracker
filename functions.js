@@ -17,17 +17,21 @@ const departmentList = [`Engineering`, `Project Management`,`Supply Chain Manage
 
 const insertEmployee = function(newEmployee) {
     console.log(newEmployee)
-    if (newEmployee.manager !== null) {
+    if (newEmployee.managerId !== null) {
         let query = `INSERT INTO employee(first_name,last_name,role_id,manager_id) `
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}','${newEmployee.managerId}');`
         connection.query(query, (err,res) => {
             if (err) throw err;
+            console.log(`Employee added!`);
+            setTimeout(runApp,2000);
         })
     } else {
         let query = `INSERT INTO employee(first_name,last_name,role_id) `
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}');`
         connection.query(query, (err,res) => {
             if (err) throw err;
+            console.log(`Employee added!`);
+            setTimeout(runApp,2000);
     })
 
     }
@@ -52,7 +56,6 @@ const functions = {
                                 let query = `SELECT first_name FROM employee e `;
                                 query += `INNER JOIN role r ON (e.role_id = r.id) `;
                                 query += `WHERE r.title = 'Manager'`
-            
                                 connection.query(query, (err, res) => {
                                     if (err) throw err;
                                     let managerList = res.map(manager => manager.first_name);
@@ -64,19 +67,22 @@ const functions = {
                                             choices: managerList
                                         }
                                     ]).then(answer => {
-                                        newEmployee.manager = answer.manager;
-                                        
+                                        let query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
+                                        query += `WHERE first_name = '${answer.manager}'`;
+                                        connection.query(query, (err,res) => {
+                                            newEmployee.managerId = res[0].id;
+                                            insertEmployee(newEmployee);
+                                        })
                                     });
                                 });
                             });
                         } else {
-                            newEmployee.manager = null;
+                            newEmployee.managerId = null;
                             insertEmployee(newEmployee);
                         };
-                    })
-                })
+                    });
+                });
             });
-
         });
     },
 
@@ -137,14 +143,14 @@ runApp = () => {
             case `View all employees by department`:
                 functions.getEmployeesDepartment()
                 break;
-            case `View all employees by Manager`:
+            case `View all employees by manager`:
                 break;
-            case `Add Employee`:
+            case `Add employee`:
                 functions.addEmployee();
                 break;
-            case `Remove Employee`:
+            case `Remove employee`:
                 break;
-            case `Update Employee role`:
+            case `Update employee role`:
                 break;
             case `Update employee manager`:
                 break;
