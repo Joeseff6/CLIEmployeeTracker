@@ -26,19 +26,18 @@ const runApp = () => {
         switch (response.menuChoice) {
             case `View all employees`:
                 functions.getEmployees();
-                setTimeout(runApp,2000);
                 break;
             case `View all employees by department`:
                 functions.getEmployeesDepartment()
-                setTimeout(runApp,2000);
                 break;
-            case `View all employees by Manager`:
+            case `View all employees by manager`:
                 break;
-            case `Add Employee`:
+            case `Add employee`:
+                functions.addEmployee();
                 break;
-            case `Remove Employee`:
+            case `Remove employee`:
                 break;
-            case `Update Employee role`:
+            case `Update employee role`:
                 break;
             case `Update employee manager`:
                 break;
