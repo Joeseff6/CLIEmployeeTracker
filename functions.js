@@ -93,7 +93,12 @@ const functions = {
     },
 
     getEmployees: () => {
-        connection.query(`SELECT * FROM employee`, (err, res) => {
+        let query = 
+        `SELECT e.first_name, e.last_name, r.title, r.salary, d.name `;
+        query += `FROM employee e `;
+        query += `INNER JOIN role r ON (e.role_id = r.id) `;
+        query += `INNER JOIN department d ON (r.department_id = d.id) `;
+        connection.query(query, (err, res) => {
             if (err) throw err;
             if (res.length === 0) {
                 console.log(`There are currently no employees. Time to hire!`)
