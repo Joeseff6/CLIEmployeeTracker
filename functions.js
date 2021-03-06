@@ -13,41 +13,69 @@ const connection = mysql.createConnection({
     database: `employees_db`,
 });
 
+const departmentList = [`Engineering`, `Project Management`,`Supply Chain Management`, `Operations`, `Quality`];
+
+const insertEmployee = function(newEmployee) {
+    console.log(newEmployee)
+    if (newEmployee.manager !== null) {
+        let query = `INSERT INTO employee(first_name,last_name,role_id,manager_id) `
+        query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}','${newEmployee.managerId}');`
+        connection.query(query, (err,res) => {
+            if (err) throw err;
+        })
+    } else {
+        let query = `INSERT INTO employee(first_name,last_name,role_id) `
+        query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}');`
+        connection.query(query, (err,res) => {
+            if (err) throw err;
+    })
+
+    }
+}
+
 const functions = {
     addEmployee: () => {
         inquirer.prompt(questions.addEmployeeQuestions).then(answer => {
             let newEmployee = new Employee(answer.firstName,answer.lastName,answer.department,answer.title,answer.salary);
-            if (answer.hasManager === `Yes`) {
-                connection.query(`SELECT * FROM employee`, (err, res) => {
-                    if (err) throw err;
-                    let query = `SELECT first_name FROM employee e `;
-                    query += `INNER JOIN role r ON (e.role_id = r.id) `;
-                    query += `WHERE r.title = 'Manager'`
-
-                    connection.query(query, (err, res) => {
-                        if (err) throw err;
-                        let managerList = res.map(manager => manager.first_name);
-                        inquirer.prompt([
-                            {
-                                type: `list`,
-                                name: `manager`,
-                                message: `Which manager does the employee report to?`,
-                                choices: managerList
-                            }
-                        ]).then(answer => {
-                            newEmployee.manager = answer.manager;
-                        });
-                    });
-                });
-            } else {
-                newEmployee.manager = null;
-            };
-            let query = `INSERT INTO department(name) VALUES ('${newEmployee.department}');`;
-            query += `INSERT INTO role(title,salary,department_id) `;
-            query += `VALUES ('${newEmployee.title}','${newEmployee.salary}')`
-            connection.query(query, (err, res) => {
+            connection.query(`SELECT id FROM department WHERE name = '${newEmployee.department}'`, (err,res) => {
                 if (err) throw err;
-            })
+                let departmentId = res[0].id;
+                let query = `INSERT INTO role(title,salary,department_id) `
+                query += `VALUES ('${newEmployee.title}','${newEmployee.salary}','${departmentId}')`
+                connection.query(query, (err,res) => {
+                    if (err) throw err;
+                    connection.query(`SELECT id FROM role ORDER BY id`, (err,res) => {
+                        newEmployee.roleId = res[res.length-1].id;
+                        if (answer.hasManager === `Yes`) {
+                            connection.query(`SELECT * FROM employee`, (err, res) => {
+                                if (err) throw err;
+                                let query = `SELECT first_name FROM employee e `;
+                                query += `INNER JOIN role r ON (e.role_id = r.id) `;
+                                query += `WHERE r.title = 'Manager'`
+            
+                                connection.query(query, (err, res) => {
+                                    if (err) throw err;
+                                    let managerList = res.map(manager => manager.first_name);
+                                    inquirer.prompt([
+                                        {
+                                            type: `list`,
+                                            name: `manager`,
+                                            message: `Which manager does the employee report to?`,
+                                            choices: managerList
+                                        }
+                                    ]).then(answer => {
+                                        newEmployee.manager = answer.manager;
+                                        
+                                    });
+                                });
+                            });
+                        } else {
+                            newEmployee.manager = null;
+                            insertEmployee(newEmployee);
+                        };
+                    })
+                })
+            });
 
         });
     },
@@ -75,33 +103,29 @@ const functions = {
     },
 
     getEmployeesDepartment: () => {
-        connection.query(`SELECT name FROM department`, (err, res) => {
-            if (err) throw err;
-            let departmentList = res.map(department => department.name);
-            inquirer.prompt([
-                {
-                    type: `list`,
-                    name: `department`,
-                    message: `Which department do you want to view?`,
-                    choices: departmentList
-                }
-            ]).then(response => {
-                let query = 
-                    `SELECT d.name, first_name, last_name, r.title `;
-                    query += `FROM employee e `;
-                    query += `INNER JOIN role r ON (e.role_id = r.id) `;
-                    query += `INNER JOIN department d ON (r.department_id = d.id) `;
-                    query += `WHERE name = ?;`;
+        inquirer.prompt([
+            {
+                type: `list`,
+                name: `department`,
+                message: `Which department do you want to view?`,
+                choices: departmentList
+            }
+        ]).then(response => {
+            let query = 
+                `SELECT d.name, first_name, last_name, r.title `;
+                query += `FROM employee e `;
+                query += `INNER JOIN role r ON (e.role_id = r.id) `;
+                query += `INNER JOIN department d ON (r.department_id = d.id) `;
+                query += `WHERE name = ?;`;
 
-                connection.query(query,[response.department], (err,res) => {
-                    if (err) throw err;
-                    console.table(res);
-                    setTimeout(runApp,2000);
-                });
+            connection.query(query,[response.department], (err,res) => {
+                if (err) throw err;
+                console.table(res);
+                setTimeout(runApp,2000);
             });
         });
     },
-};
+}
 
 runApp = () => {
     console.log(`Welcome to the Employee Tracker!`);
