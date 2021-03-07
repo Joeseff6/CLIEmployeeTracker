@@ -23,7 +23,7 @@ const insertEmployee = function(newEmployee) {
             if (err) throw err;
             console.log(`Employee added!`);
             setTimeout(runApp,2000);
-        })
+        });
     } else {
         let query = `INSERT INTO employee(first_name,last_name,role_id) `
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}');`
@@ -31,10 +31,9 @@ const insertEmployee = function(newEmployee) {
             if (err) throw err;
             console.log(`Employee added!`);
             setTimeout(runApp,2000);
-    })
-
-    }
-}
+        });
+    };
+};
 
 const functions = {
     addEmployee: () => {
@@ -167,7 +166,7 @@ const functions = {
         });
     },
 
-    updateEmployeeRole: () => {
+    updateEmployeeSalary: () => {
         connection.query(`SELECT first_name,last_name FROM employee`, (err,res) => {
             let employeeList = res.map(employee => employee.first_name + ` ` + employee.last_name);
             inquirer.prompt([
@@ -179,63 +178,61 @@ const functions = {
                 }
             ]).then(answer => {
                 let employee = answer.employee;
-                inquirer.prompt(questions.updateEmployee).then(answer => {
-                    let salaryChange = answer.salaryChange;
-                    let titleChange = answer.titleChange;
-                    if (salaryChange === `Yes`) {
-                        inquirer.prompt([
-                            {
-                                type: `number`,
-                                name: `updateSalary`,
-                                message: `Please input the new salary:`
-                            }
-                        ]).then(answer => {
-                            let newSalary = answer.updateSalary;
-                            query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
-                            query += `WHERE CONCAT(e.first_name,' ',e.last_name) = '${employee}'`
-                            connection.query(query, (err,res) => {
-                                if (err) throw err;
-                                let roleId = res[0].id;
-                                connection.query(`UPDATE role SET salary = ${newSalary} WHERE id = ${roleId}`, (err,res) => {
-                                    if (err) throw err;
-                                    if (titleChange === `No`) {
-                                        console.log(`Updates have been made!`);
-                                        setTimeout(runApp,2000);
-                                    };
-                                });
-                            });
-                        });
-                    };
-
-                    if (titleChange === `Yes`) {
-                        inquirer.prompt([
-                            {
-                                type: `input`,
-                                name: `updateTitle`,
-                                message: `What is the employee's new title?`
-                            }
-                        ]).then(answer => {
-                            let newTitle = answer.updateTitle;
-                            query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
-                            query += `WHERE CONCAT(e.first_name,' ',e.last_name) = '${employee}'`
-                            connection.query(query, (err,res) => {
-                                if (err) throw err;
-                                let roleId = res[0].id;
-                                connection.query(`UPDATE role SET title = '${newTitle}' WHERE id = ${roleId}`, (err,res) => {
-                                    if (err) throw err;
-                                    if (salaryChange === `No`) {
-                                        console.log(`Updates have been made!`);
-                                        setTimeout(runApp,2000);
-                                    };
-                                });
-                            });
-                        });
-                    };
-
-                    if (salaryChange === `No` && titleChange === `No`) {
-                        console.log(`No updates have been made`);
-                        setTimeout(runApp,2000);
+                inquirer.prompt([
+                    {
+                        type: `number`,
+                        name: `updateSalary`,
+                        message: `Please input the new salary:`
                     }
+                ]).then(answer => {
+                    let newSalary = answer.updateSalary;
+                    query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
+                    query += `WHERE CONCAT(e.first_name,' ',e.last_name) = '${employee}'`
+                    connection.query(query, (err,res) => {
+                        if (err) throw err;
+                        let roleId = res[0].id;
+                        connection.query(`UPDATE role SET salary = ${newSalary} WHERE id = ${roleId}`, (err,res) => {
+                            if (err) throw err;
+                            console.log(`${employee}'s salary has been updated to ${newSalary}.`);
+                            setTimeout(runApp,2000);
+                        });
+                    });
+                });
+            });
+        });
+    },
+
+    updateEmployeeTitle: () => {
+        connection.query(`SELECT first_name,last_name FROM employee`, (err,res) => {
+            let employeeList = res.map(employee => employee.first_name + ` ` + employee.last_name);
+            inquirer.prompt([
+                {
+                    type: `list`,
+                    name: `employee`,
+                    message: `Which employee do you want to update?`,
+                    choices: employeeList
+                }
+            ]).then(answer => {
+                let employee = answer.employee;
+                inquirer.prompt([
+                    {
+                        type: `input`,
+                        name: `updateTitle`,
+                        message: `What is the employee's new title?`
+                    }
+                ]).then(answer => {
+                    let newTitle = answer.updateTitle;
+                    query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
+                    query += `WHERE CONCAT(e.first_name,' ',e.last_name) = '${employee}'`
+                    connection.query(query, (err,res) => {
+                        if (err) throw err;
+                        let roleId = res[0].id;
+                        connection.query(`UPDATE role SET title = '${newTitle}' WHERE id = ${roleId}`, (err,res) => {
+                            if (err) throw err;
+                            console.log(`${employee}'s title has been updated to ${newTitle}.`);
+                            setTimeout(runApp,2000);
+                        });
+                    });
                 });
             });
         });
@@ -269,8 +266,11 @@ const runApp = () => {
             case `Remove employee`:
                 functions.removeEmployee();
                 break;
-            case `Update employee role`:
-                functions.updateEmployeeRole()
+            case `Update employee title`:
+                functions.updateEmployeeTitle();
+                break;
+            case `Update employee salary`:
+                functions.updateEmployeeSalary();
                 break;
             case `Exit`:
                 functions.exit();
