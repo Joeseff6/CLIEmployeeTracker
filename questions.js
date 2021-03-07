@@ -1,11 +1,10 @@
 const mainMenu = [
     `View all employees`,
+    `View departments`,
     `View all employees by department`,
-    `View all employees by manager`,
     'Add employee',
     `Remove employee`,
     `Update employee role`,
-    `Update employee manager`,
     `Exit`
 ];
 
