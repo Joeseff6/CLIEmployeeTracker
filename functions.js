@@ -258,6 +258,7 @@ const runApp = () => {
                 functions.getEmployees();
                 break;
             case `View departments`:
+                functions.viewDepartments()
                 break;
             case `View all employees by department`:
                 functions.getEmployeesDepartment()
