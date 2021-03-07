@@ -239,20 +239,28 @@ const functions = {
                 });
             });
         });
-    }
-}
+    },
 
-runApp = () => {
+    viewDepartments: () => {
+        connection.query(`SELECT name FROM department`, (err,res) => {
+            if (err) throw err;
+            console.table(res);
+            setTimeout(runApp,2000);
+        });
+    }
+};
+
+const runApp = () => {
     console.log(`Welcome to the Employee Tracker!`);
     inquirer.prompt(questions.menuChoices).then(response => {
         switch (response.menuChoice) {
             case `View all employees`:
                 functions.getEmployees();
                 break;
+            case `View departments`:
+                break;
             case `View all employees by department`:
                 functions.getEmployeesDepartment()
-                break;
-            case `View all employees by manager`:
                 break;
             case `Add employee`:
                 functions.addEmployee();
@@ -262,8 +270,6 @@ runApp = () => {
                 break;
             case `Update employee role`:
                 functions.updateEmployeeRole()
-                break;
-            case `Update employee manager`:
                 break;
             case `Exit`:
                 functions.exit();
