@@ -19,7 +19,6 @@ connection.connect((err) => {
     runApp()
 });
 
-
 const runApp = () => {
     console.log(`Welcome to the Employee Tracker!`);
     inquirer.prompt(questions.menuChoices).then(response => {
