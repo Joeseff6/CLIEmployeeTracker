@@ -9,8 +9,7 @@ const mainMenu = [
     `Exit`
 ];
 
-const departments = [`Engineering`, `Project Management`,`Supply Chain Management`, `Operations`, `Quality`]
-
+const departments = [`Engineering`, `Project Management`,`Supply Chain Management`, `Operations`, `Quality`];
 
 const questions = {
     menuChoices: [
@@ -56,6 +55,21 @@ const questions = {
             choices: [`Yes`,`No`]
         },
     ],
+
+    updateEmployee: [
+        {
+            type: `list`,
+            name: `salaryChange`,
+            message: `Is there a change in the employee's salary?`,
+            choices: [`Yes`,`No`]
+        },
+        {
+            type: `list`,
+            name: `titleChange`,
+            message: `Is there a change in the employee's title?`,
+            choices: [`Yes`,`No`]
+        }
+    ]
 };
 
 module.exports = questions;
