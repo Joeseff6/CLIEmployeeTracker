@@ -21,7 +21,7 @@ const insertEmployee = function(newEmployee) {
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}','${newEmployee.managerId}');`
         connection.query(query, (err,res) => {
             if (err) throw err;
-            console.log(`Employee added!`);
+            console.log(`Employee added!\n`);
             setTimeout(runApp,2000);
         });
     } else {
@@ -29,7 +29,7 @@ const insertEmployee = function(newEmployee) {
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}');`
         connection.query(query, (err,res) => {
             if (err) throw err;
-            console.log(`Employee added!`);
+            console.log(`Employee added!\n`);
             setTimeout(runApp,2000);
         });
     };
@@ -158,7 +158,7 @@ const functions = {
                     let roleId = res[0].id;
                     connection.query(`DELETE FROM role WHERE id = ${roleId}`, (err,res) => {
                         if (err) throw err;
-                        console.log(`Employee removed.`)
+                        console.log(`Employee removed.\n`)
                         setTimeout(runApp,2000);
                     });
                 });
@@ -193,7 +193,7 @@ const functions = {
                         let roleId = res[0].id;
                         connection.query(`UPDATE role SET salary = ${newSalary} WHERE id = ${roleId}`, (err,res) => {
                             if (err) throw err;
-                            console.log(`${employee}'s salary has been updated to ${newSalary}.`);
+                            console.log(`${employee}'s salary has been updated to ${newSalary}.\n`);
                             setTimeout(runApp,2000);
                         });
                     });
@@ -229,7 +229,7 @@ const functions = {
                         let roleId = res[0].id;
                         connection.query(`UPDATE role SET title = '${newTitle}' WHERE id = ${roleId}`, (err,res) => {
                             if (err) throw err;
-                            console.log(`${employee}'s title has been updated to ${newTitle}.`);
+                            console.log(`${employee}'s title has been updated to ${newTitle}.\n`);
                             setTimeout(runApp,2000);
                         });
                     });
@@ -242,6 +242,7 @@ const functions = {
         connection.query(`SELECT name FROM department`, (err,res) => {
             if (err) throw err;
             console.table(res);
+            console.log(`\n`);
             setTimeout(runApp,2000);
         });
     }
