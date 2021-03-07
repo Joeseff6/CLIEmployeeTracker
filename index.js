@@ -38,8 +38,11 @@ const runApp = () => {
             case `Remove employee`:
                 functions.removeEmployee();
                 break;
-            case `Update employee role`:
-                functions.updateEmployeeRole()
+            case `Update employee title`:
+                functions.updateEmployeeTitle();
+                break;
+            case `Update employee salary`:
+                functions.updateEmployeeSalary();
                 break;
             case `Exit`:
                 functions.exit();
