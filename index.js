@@ -36,8 +36,10 @@ const runApp = () => {
                 functions.addEmployee();
                 break;
             case `Remove employee`:
+                functions.removeEmployee();
                 break;
             case `Update employee role`:
+                functions.updateEmployeeRole()
                 break;
             case `Update employee manager`:
                 break;
