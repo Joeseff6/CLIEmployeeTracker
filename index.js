@@ -27,10 +27,11 @@ const runApp = () => {
             case `View all employees`:
                 functions.getEmployees();
                 break;
+            case `View departments`:
+                functions.viewDepartments()
+                break;
             case `View all employees by department`:
                 functions.getEmployeesDepartment()
-                break;
-            case `View all employees by manager`:
                 break;
             case `Add employee`:
                 functions.addEmployee();
@@ -41,11 +42,9 @@ const runApp = () => {
             case `Update employee role`:
                 functions.updateEmployeeRole()
                 break;
-            case `Update employee manager`:
-                break;
             case `Exit`:
                 functions.exit();
                 break;
-        }
-    })
+        };
+    });
 };
