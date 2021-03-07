@@ -4,7 +4,8 @@ const mainMenu = [
     `View all employees by department`,
     'Add employee',
     `Remove employee`,
-    `Update employee role`,
+    `Update employee title`,
+    `Update employee salary`,
     `Exit`
 ];
 
@@ -54,21 +55,6 @@ const questions = {
             choices: [`Yes`,`No`]
         },
     ],
-
-    updateEmployee: [
-        {
-            type: `list`,
-            name: `salaryChange`,
-            message: `Is there a change in the employee's salary?`,
-            choices: [`Yes`,`No`]
-        },
-        {
-            type: `list`,
-            name: `titleChange`,
-            message: `Is there a change in the employee's title?`,
-            choices: [`Yes`,`No`]
-        }
-    ]
 };
 
 module.exports = questions;
