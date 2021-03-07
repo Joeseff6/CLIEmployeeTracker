@@ -44,7 +44,7 @@ FOREIGN KEY (manager_id)
 	INSERT INTO department(name)
 	VALUES
 	('Engineering'),
-	('Project Managment'),
+	('Project Management'),
 	('Supply Chain Management'),
 	('Operations'),
 	('Quality');

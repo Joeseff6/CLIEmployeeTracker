@@ -1,0 +1,14 @@
+Features:
+
+---Required--
+Add employee
+    Add department, role, employee
+View all employees
+View employees by department
+View employees by role
+Update employee role
+
+--Bonus--
+Remove employee 
+View employees by manager
+Update employee manager
