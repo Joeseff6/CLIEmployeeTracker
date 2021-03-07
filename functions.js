@@ -16,7 +16,6 @@ const connection = mysql.createConnection({
 const departmentList = [`Engineering`, `Project Management`,`Supply Chain Management`, `Operations`, `Quality`];
 
 const insertEmployee = function(newEmployee) {
-    console.log(newEmployee)
     if (newEmployee.managerId !== null) {
         let query = `INSERT INTO employee(first_name,last_name,role_id,manager_id) `
         query += `VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.roleId}','${newEmployee.managerId}');`
@@ -102,7 +101,6 @@ const functions = {
             if (err) throw err;
             if (res.length === 0) {
                 console.log(`There are currently no employees. Time to hire!`)
-                console.log(`------------------------------------------------\n\n`)
                 setTimeout(runApp,2000);
             } else {
                 console.log(`Here are the current employees:\n`);
@@ -131,11 +129,44 @@ const functions = {
 
             connection.query(query,[response.department], (err,res) => {
                 if (err) throw err;
-                console.table(res);
-                setTimeout(runApp,2000);
+                if (res.length === 0) {
+                    console.log(`There are no employees in this department. Time to hire!\n`);
+                    setTimeout(runApp,2000);
+                } else {
+                    console.table(res);
+                    setTimeout(runApp,2000);
+                }
+
             });
         });
     },
+
+    removeEmployee: () => {
+        connection.query(`SELECT first_name,last_name FROM employee`, (err,res) => {
+            let employeeList = res.map(employee => employee.first_name + ` ` + employee.last_name);
+            inquirer.prompt([
+                {
+                    type: `list`,
+                    name: `employee`,
+                    message: `Who do you want to remove?`,
+                    choices: employeeList
+                }
+            ]).then(answer => {
+                query = `SELECT r.id FROM role r INNER JOIN employee e ON (e.role_id = r.id) `;
+                query += `WHERE CONCAT(e.first_name,' ',e.last_name) = '${answer.employee}'`
+                connection.query(query, (err,res) => {
+                    if (err) throw err;
+                    let roleId = res[0].id;
+                    connection.query(`DELETE FROM role WHERE id = ${roleId}`, (err,res) => {
+                        if (err) throw err;
+                        console.log(`Employee removed.`)
+                        setTimeout(runApp,2000);
+                    })
+
+                })
+            })
+        })
+    }
 }
 
 runApp = () => {
@@ -154,6 +185,7 @@ runApp = () => {
                 functions.addEmployee();
                 break;
             case `Remove employee`:
+                functions.removeEmployee();
                 break;
             case `Update employee role`:
                 break;
