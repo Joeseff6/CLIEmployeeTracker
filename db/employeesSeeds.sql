@@ -1,3 +1,7 @@
+-- Run for first time use only
+-- ------------------------------------------------
+DROP DATABASE IF EXISTS employees_db;
+
 -- Create and use database
 CREATE DATABASE employees_db;
 

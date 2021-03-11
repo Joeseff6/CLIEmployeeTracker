@@ -42,7 +42,9 @@ Use the following command to copy the env example file so you can replace the va
 
 `cp .env.example .env`
 
-After connecting to the MySQL server, __you must__ use the queries in /db/employeesSeeds.SQL before invoking the CLIEmployeeTracker.
+## Important for first time use:
+
+After connecting to the MySQL server, __you must__ use the queries in /db/employeesSeeds.SQL before invoking the CLIEmployeeTracker if using for the first time. The queries can be copy and pasted as is in the SQL software.
 
 # Tasks to Complete the Job :white_check_mark:
 
