@@ -4,10 +4,6 @@
 # CLIEmployeeTracker
 A command line application that is used to store and read data on Employees.
 
-## Link to Demonstration 
-
-_https://drive.google.com/file/d/1ZKUnaO6HZ4JN5tiaHReqyVNv5ww5mktP/view?usp=sharing_
-
 ## Project Description
 
 The purpose of this application is to use Node.js to connect to a MySQL Workbench server so that a user can store and read data from a database. Javascript (and some SQL) will be used to communicate between Node.js and MySQL by using the mysql2 module. This differs from my past projects due to the fact that the information isn't stored locally (using localstorage in Javascript).
